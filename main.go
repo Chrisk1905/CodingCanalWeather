@@ -9,9 +9,10 @@ import (
 	"os"
 )
 
-type cityLatLon struct {
-	lat float32
-	lon float32
+type city struct {
+	name string
+	lat  float32
+	lon  float32
 }
 
 type weather struct {
@@ -58,7 +59,7 @@ type weather struct {
 	Cod      int    `json:"cod"`
 }
 
-func getWeather(city cityLatLon) error {
+func getWeather(city city) error {
 	baseUrl := "https://api.openweathermap.org/data/2.5/weather"
 	apiKey := os.Getenv("WEATHER_API_KEY")
 	urlToCall, _ := url.Parse(baseUrl)
@@ -91,16 +92,27 @@ func getWeather(city cityLatLon) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(string(prettyJSON)) // Print formatted JSON
+	fmt.Println(city.name)
+	fmt.Println(string(prettyJSON))
 	return nil
 }
 
-func main() {
+func getCities() []city {
+	Seattle := city{name: "Seattle", lat: 47.608013, lon: -122.335167}
+	LA := city{name: "Los Angeles", lat: 34.052235, lon: -118.243683}
+	NewYork := city{name: "New York", lat: 40.730610, lon: -73.935242}
+	Seoul := city{name: "Seoul", lat: 37.532600, lon: 127.024612}
+	Vancouver := city{name: "Vancouver", lat: 49.246292, lon: -123.116226}
+	return []city{Seattle, LA, NewYork, Seoul, Vancouver}
+}
 
-	Seattle := cityLatLon{lat: 47.608013, lon: -122.335167}
-	if err := getWeather(Seattle); err != nil {
-		fmt.Println(err)
+func main() {
+	var cities []city = getCities()
+
+	for _, city := range cities {
+		if err := getWeather(city); err != nil {
+			fmt.Println(err)
+		}
 	}
 
 }
