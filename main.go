@@ -71,7 +71,7 @@ func getWeather(city city) (weather, error) {
 	params.Add("appid", apiKey)
 	urlToCall.RawQuery = params.Encode()
 
-	//make get requ
+	//make GET request
 	weather := weather{}
 	res, err := http.Get(urlToCall.String())
 	if err != nil {
