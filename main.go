@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 )
 
 type city struct {
@@ -59,7 +60,7 @@ type weather struct {
 	Cod      int    `json:"cod"`
 }
 
-func getWeather(city city) error {
+func getWeather(city city) (weather, error) {
 	baseUrl := "https://api.openweathermap.org/data/2.5/weather"
 	apiKey := os.Getenv("WEATHER_API_KEY")
 	urlToCall, _ := url.Parse(baseUrl)
@@ -70,31 +71,34 @@ func getWeather(city city) error {
 	params.Add("appid", apiKey)
 	urlToCall.RawQuery = params.Encode()
 
-	//make get call, and unmarshall JSON
+	//make get requ
 	weather := weather{}
 	res, err := http.Get(urlToCall.String())
 	if err != nil {
-		return err
+		return weather, err
 	}
 	body, err := io.ReadAll(res.Body)
 	res.Body.Close()
 	if res.StatusCode > 299 {
-		return fmt.Errorf("response failed with status code: %d and\nbody: %s", res.StatusCode, body)
+		return weather, fmt.Errorf("response failed with status code: %d and\nbody: %s", res.StatusCode, body)
 	}
 	if err != nil {
-		return err
+		return weather, err
 	}
+	//Unmarshal JSON
 	err = json.Unmarshal(body, &weather)
 	if err != nil {
-		return err
+		return weather, err
 	}
-	prettyJSON, err := json.MarshalIndent(weather, "", "  ")
+
+	prettyWeatherJSON, err := json.MarshalIndent(weather, "", "  ")
 	if err != nil {
-		return err
+		fmt.Printf("error printing weather: %+v", err)
 	}
 	fmt.Println(city.name)
-	fmt.Println(string(prettyJSON))
-	return nil
+	fmt.Println(string(prettyWeatherJSON))
+
+	return weather, nil
 }
 
 func getCities() []city {
@@ -108,11 +112,16 @@ func getCities() []city {
 
 func main() {
 	var cities []city = getCities()
+	ticker := time.NewTicker(time.Second * 6)
+	defer ticker.Stop()
 
-	for _, city := range cities {
-		if err := getWeather(city); err != nil {
-			fmt.Println(err)
+	for tick := range ticker.C {
+		fmt.Println(tick)
+		for _, city := range cities {
+			_, err := getWeather(city)
+			if err != nil {
+				fmt.Printf("error while in getWeather: %+v", err)
+			}
 		}
 	}
-
 }
