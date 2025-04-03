@@ -1,6 +1,7 @@
 CREATE TABLE weather_data (
     id UUID PRIMARY KEY,
     weather_conditions_id INT REFERENCES weather_conditions(id),
+    coordinates_id UUID REFERENCES coordinates(id) ON DELETE CASCADE,    
     city_name VARCHAR(50),
     country VARCHAR(50),
     temperature FLOAT,
