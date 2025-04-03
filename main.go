@@ -1,14 +1,23 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"time"
+
+	"github.com/Chrisk1905/CodingCanalWeather/internal/database"
+	_ "github.com/lib/pq"
 )
+
+type App struct {
+	dbQueries *database.Queries
+}
 
 type city struct {
 	name string
@@ -110,7 +119,28 @@ func getCities() []city {
 	return []city{Seattle, LA, NewYork, Seoul, Vancouver}
 }
 
+func (state *App) storeWeather(w weather) error {
+
+	return nil
+}
+
 func main() {
+	//open connection to postgresDB
+	dbURL := os.Getenv("DB_URL")
+	if dbURL == "" {
+		log.Fatal("DB_URL enviroment variable is empty")
+	}
+	connection, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("Failed to connect to the database: %+v", err)
+	}
+	defer connection.Close()
+
+	app := &App{
+		dbQueries: database.New(connection),
+	}
+
+	//periodic querying of API
 	var cities []city = getCities()
 	ticker := time.NewTicker(time.Second * 6)
 	defer ticker.Stop()
@@ -118,10 +148,12 @@ func main() {
 	for tick := range ticker.C {
 		fmt.Println(tick)
 		for _, city := range cities {
-			_, err := getWeather(city)
+			weather, err := getWeather(city)
 			if err != nil {
 				fmt.Printf("error while in getWeather: %+v", err)
+				continue
 			}
+			app.storeWeather(weather)
 		}
 	}
 }
