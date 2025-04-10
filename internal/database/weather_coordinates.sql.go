@@ -23,6 +23,23 @@ func (q *Queries) GetWeatherByID(ctx context.Context, id uuid.UUID) (Coordinate,
 	return i, err
 }
 
+const getWeatherCoord = `-- name: GetWeatherCoord :one
+SELECT id, lon, lat FROM coordinates 
+WHERE lon = $1 AND lat = $2
+`
+
+type GetWeatherCoordParams struct {
+	Lon sql.NullFloat64
+	Lat sql.NullFloat64
+}
+
+func (q *Queries) GetWeatherCoord(ctx context.Context, arg GetWeatherCoordParams) (Coordinate, error) {
+	row := q.db.QueryRowContext(ctx, getWeatherCoord, arg.Lon, arg.Lat)
+	var i Coordinate
+	err := row.Scan(&i.ID, &i.Lon, &i.Lat)
+	return i, err
+}
+
 const insertWeatherCoordinates = `-- name: InsertWeatherCoordinates :one
 INSERT INTO coordinates(id, lon, lat)
 VALUES (

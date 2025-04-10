@@ -24,26 +24,30 @@ type WeatherCondition struct {
 	Icon        sql.NullString
 }
 
+type WeatherDataCondition struct {
+	WeatherDataID uuid.UUID
+	ConditionID   int32
+}
+
 type WeatherDatum struct {
-	ID                  uuid.UUID
-	WeatherConditionsID sql.NullInt32
-	CoordinatesID       uuid.NullUUID
-	CityName            sql.NullString
-	Country             sql.NullString
-	Temperature         sql.NullFloat64
-	FeelsLike           sql.NullFloat64
-	TempMin             sql.NullFloat64
-	TempMax             sql.NullFloat64
-	Pressure            sql.NullInt32
-	Humidity            sql.NullInt32
-	SeaLevel            sql.NullInt32
-	GrndLevel           sql.NullInt32
-	Visibility          sql.NullInt32
-	WindSpeed           sql.NullFloat64
-	WindDeg             sql.NullInt32
-	Cloudiness          sql.NullInt32
-	Timestamp           sql.NullTime
-	Sunrise             sql.NullTime
-	Sunset              sql.NullTime
-	Timezone            sql.NullInt32
+	ID            uuid.UUID
+	CoordinatesID uuid.NullUUID
+	CityName      sql.NullString
+	Country       sql.NullString
+	Temperature   sql.NullFloat64
+	FeelsLike     sql.NullFloat64
+	TempMin       sql.NullFloat64
+	TempMax       sql.NullFloat64
+	Pressure      sql.NullInt32
+	Humidity      sql.NullInt32
+	SeaLevel      sql.NullInt32
+	GrndLevel     sql.NullInt32
+	Visibility    sql.NullInt32
+	WindSpeed     sql.NullFloat64
+	WindDeg       sql.NullInt32
+	Cloudiness    sql.NullInt32
+	Timestamp     sql.NullTime
+	Sunrise       sql.NullTime
+	Sunset        sql.NullTime
+	Timezone      sql.NullInt32
 }
