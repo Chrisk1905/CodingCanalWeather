@@ -72,7 +72,16 @@ type Weather struct {
 	Cod      int    `json:"cod"`
 }
 
-func (weatherService *WeatherService) getWeather(city City) (Weather, error) {
+func GetCities() []City {
+	Seattle := City{Name: "Seattle", Lat: 47.608013, Lon: -122.335167}
+	LA := City{Name: "Los Angeles", Lat: 34.052235, Lon: -118.243683}
+	NewYork := City{Name: "New York", Lat: 40.730610, Lon: -73.935242}
+	Seoul := City{Name: "Seoul", Lat: 37.532600, Lon: 127.024612}
+	Vancouver := City{Name: "Vancouver", Lat: 49.246292, Lon: -123.116226}
+	return []City{Seattle, LA, NewYork, Seoul, Vancouver}
+}
+
+func (weatherService *WeatherService) GetWeather(city City) (Weather, error) {
 	baseUrl := "https://api.openweathermap.org/data/2.5/weather"
 	apiKey := weatherService.WeatherAPI
 	urlToCall, _ := url.Parse(baseUrl)
@@ -113,7 +122,7 @@ func (weatherService *WeatherService) getWeather(city City) (Weather, error) {
 	return weather, nil
 }
 
-func (weatherService *WeatherService) storeWeather(w Weather) error {
+func (weatherService *WeatherService) StoreWeather(w Weather) error {
 	//check if the coordinate is in the database
 	ctx := context.Background()
 	getCoordParams := database.GetWeatherCoordParams{
