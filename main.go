@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -26,7 +27,9 @@ func main() {
 
 	app := &services.WeatherService{
 		Repo:       database.New(connection),
+		Client:     http.DefaultClient,
 		WeatherAPI: os.Getenv("WEATHER_API_KEY"),
+		WeatherURL: "https://api.openweathermap.org/data/2.5/weather",
 	}
 
 	//periodic querying of API

@@ -17,7 +17,9 @@ import (
 
 type WeatherService struct {
 	Repo       *database.Queries
+	Client     *http.Client
 	WeatherAPI string
+	WeatherURL string
 }
 
 type City struct {
@@ -82,9 +84,8 @@ func GetCities() []City {
 }
 
 func (weatherService *WeatherService) GetWeather(city City) (Weather, error) {
-	baseUrl := "https://api.openweathermap.org/data/2.5/weather"
 	apiKey := weatherService.WeatherAPI
-	urlToCall, _ := url.Parse(baseUrl)
+	urlToCall, _ := url.Parse(weatherService.WeatherURL)
 	// Define query parameters
 	params := url.Values{}
 	params.Add("lat", fmt.Sprintf("%f", city.Lat))
@@ -94,14 +95,14 @@ func (weatherService *WeatherService) GetWeather(city City) (Weather, error) {
 
 	//make GET request
 	weather := Weather{}
-	res, err := http.Get(urlToCall.String())
+	res, err := weatherService.Client.Get(urlToCall.String())
 	if err != nil {
 		return weather, err
 	}
 	body, err := io.ReadAll(res.Body)
 	res.Body.Close()
 	if res.StatusCode > 299 {
-		return weather, fmt.Errorf("response failed with status code: %d and\nbody: %s", res.StatusCode, body)
+		return weather, fmt.Errorf("response failed with status code: %d", res.StatusCode)
 	}
 	if err != nil {
 		return weather, err
@@ -155,7 +156,7 @@ func (weatherService *WeatherService) StoreWeather(w Weather) error {
 			if !errors.Is(err, sql.ErrNoRows) {
 				return err
 			}
-			// Not found in database - insert new condition
+			// Not found in database, insert new condition
 			newCond := database.InsertConditionParams{
 				ID:          uuid.New(),
 				ConditionID: condID,
