@@ -52,9 +52,9 @@ exit
 ```
 
 ### Create Tables from the Schema with Goose
-From here I will be using psql and goose to create our tables.
-If you use another SQL manager such as pgAdmin, feel free to use that instead. 
-The schemas are in sql/schema. 
+From here I will be using psql and goose to create our tables. If you use another SQL manager such as pgAdmin, feel free to use that instead. 
+
+The schemas are in `sql/schema` 
 
 Add goose to create our schemas
 ```
@@ -62,34 +62,41 @@ go install github.com/pressly/goose/v3/cmd/goose@latest
 ```
 
 Get your postgres connection string
+
 Mac OS
-```
-protocol://username@host:port/database
-```
+
+`protocol://username@host:port/database`
+
 Linux/WSL
-```
+
+`
 protocol://username:password@host:port/database
-```
+`
+
 The port is 5432 by default.
 
 for example on macOS:
 
-postgres://username:@localhost:5432/weather
+`postgres://username:@localhost:5432/weather`
 
 Test the connection string by connectiong to the weather database
+
 ```
 psql "postgres://username:@localhost:5432/weather"
 exit
 ```
 
 cd into the sql/schema directory and run the up migration.
+
 ```
 cd sql/schema
 goose postgres <connection_string> up
 ```
 
 Now the tables should be created! 
+
 Check if the tables have been crreated.
+
 ```
 psql weather
 \dt
@@ -103,6 +110,7 @@ Add enviroment variables
 export WEATHER_API_KEY='<your open weather API KEY>'
 export DB_URL='<your postgres connection string with ssl mode disabled>'
 ```
+
 Add your postgres connections string with ?sslmode=disable at the end.
 
 `postgres://username:password@host:port/dbname?sslmode=disable`
