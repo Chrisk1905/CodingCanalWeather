@@ -204,7 +204,7 @@ I had to make 3 big concessions due to a lack of time and experience on my part.
 
 **Synchrous over asynchronous**
     
-For the sake of time I choose to call the API synchronously, as a minimum viable product. This made returning any errors easy, and was quicker to write and debug. If I was a more experience developer, or had more time, I would have refactored my code to call the Open Weather API asynchronously using Go Routines and Channels, one of the killer features of the language. 
+For the sake of time I choose to call the API synchronously, as a minimum viable product. This made returning any errors easy, and was quicker to write and debug. If I had more time or experience debugging go routines, I would have refactored my code to call the Open Weather API asynchronously using Go Routines and Channels, one of the killer features of the language. 
 
 **No Docker**
 
