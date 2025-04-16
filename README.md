@@ -105,11 +105,11 @@ export DB_URL='<your postgres connection string with ssl mode disabled>'
 ```
 Add your postgres connections string with ?sslmode=disable at the end.
 
-postgres://username:password@host:port/dbname?sslmode=disable
+`postgres://username:password@host:port/dbname?sslmode=disable`
 
 for example:
 
-postgres://username:@localhost:5432/weather?sslmode=disable
+`postgres://username:@localhost:5432/weather?sslmode=disable`
 
 
 return to the root of the project
