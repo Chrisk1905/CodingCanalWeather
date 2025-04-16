@@ -32,8 +32,9 @@ sudo apt install postgresql postgresql-contrib
 zsh
 ```
 git clone https://github.com/Chrisk1905/CodingCanalWeather
+```
+```
 cd CodingCanalWeather
-
 ```
 
 Add dependancies
@@ -45,9 +46,15 @@ go mod download
 
 Create the dattabase on Postgres. I will call my database weather.
 ```
-psql postgres 
+psql postgres
+```
+```
 CREATE DATABASE weather;
+```
+```
 SELECT version();
+```
+```
 exit
 ```
 
@@ -83,13 +90,14 @@ Test the connection string by connectiong to the weather database
 
 ```
 psql "postgres://username:@localhost:5432/weather"
-exit
 ```
 
 cd into the sql/schema directory and run the up migration.
 
 ```
 cd sql/schema
+```
+```
 goose postgres <connection_string> up
 ```
 
@@ -99,7 +107,11 @@ Check if the tables have been crreated.
 
 ```
 psql weather
+```
+```
 \dt
+```
+```
 exit
 ```
 
