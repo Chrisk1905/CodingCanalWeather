@@ -171,7 +171,9 @@ main.go - contains the dependancy injection, and calls services to periodically 
 ## Design decisions explanation
 
 I choose to use the tools I knew how to use from previous projects. 
+
 I chose Go for my language a popular one for backend development.
+
 I chose Postgres for my SQL database, along with Goose for database migration. 
 
 ### Database design
@@ -182,7 +184,7 @@ The database contains 4 tables:
 - weather_data
 - weather_data_conditions
 
-Normalization
+**Normalization**
 
 I tried to avoid data duplications and normalize to first normal form. 
 
@@ -190,7 +192,7 @@ I tried to avoid data duplications and normalize to first normal form.
 - weather_conditions was used to store conditions, it has imformation to discribe sunny clear skys, cloudy with rain, or windy with thunder.
 - weather_data was used to store the rest of the data, and form relationships with coordinates and weather_conditions.
 
-Relationships
+**Relationships**
 
 - coordinates has a one to many relationship with weather_data
 - weather_conditions has a many to many relationship with weather_data
@@ -202,7 +204,7 @@ I had to make 3 big concessions due to a lack of time and experience on my part.
 
 **Synchrous over asynchronous**
     
-For the sake of time I choose to call the API synchronously, as an minimum viable product. This made returning any errors easy, and was quicker to write and debug. If I was a more experience developer, or had more time, I would have refactored my code the weather API asynchronously using go routines and channel, one of the killer features of the language. 
+For the sake of time I choose to call the API synchronously, as a minimum viable product. This made returning any errors easy, and was quicker to write and debug. If I was a more experience developer, or had more time, I would have refactored my code to call the Open Weather API asynchronously using Go Routines and Channels, one of the killer features of the language. 
 
 **No Docker**
 
