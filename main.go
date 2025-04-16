@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	//open connection to postgresDB
+	//Dependancy injection
 	dbURL := os.Getenv("DB_URL")
 	if dbURL == "" {
 		log.Fatal("DB_URL enviroment variable is empty")
@@ -32,7 +32,7 @@ func main() {
 		WeatherURL: "https://api.openweathermap.org/data/2.5/weather",
 	}
 
-	//periodic querying of API
+	//periodic querying and storage of API
 	var cities []services.City = services.GetCities()
 	ticker := time.NewTicker(time.Second * 5)
 	defer ticker.Stop()
