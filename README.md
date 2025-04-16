@@ -3,9 +3,9 @@
 This is a technical challenge for CodingCanal. 
 The Weather App will call the Open Weather API for 5 cities, display the response periodically, and store the results into a postgres database.  
 
-## Setup instructions
+# Setup instructions
 
-### Prequisites
+## Prequisites
 Go version 1.23+
 
 you can download it here
@@ -27,7 +27,7 @@ sudo apt update
 sudo apt install postgresql postgresql-contrib
 ```
 
-### Clone the repository
+## Clone the repository
 
 zsh
 ```
@@ -42,7 +42,7 @@ Add dependancies
 go mod download
 ```
 
-### Set up the Postgres Database
+## Set up the Postgres Database
 
 Create the dattabase on Postgres. I will call my database weather.
 ```
@@ -58,7 +58,7 @@ SELECT version();
 exit
 ```
 
-### Create Tables from the Schema with Goose
+## Create Tables from the Schema with Goose
 From here I will be using psql and goose to create our tables. If you use another SQL manager such as pgAdmin, feel free to use that instead. 
 
 The schemas are in `sql/schema` 
@@ -115,7 +115,7 @@ psql weather
 exit
 ```
 
-### Run the app and tests
+## Run the app and tests
 
 Add enviroment variables
 ```
@@ -147,7 +147,7 @@ You should see the weather JSON data for 5 cities, every 5 seconds.
 
 
 
-## Architecture overview
+# Architecture overview
 ```
 /internal
 -/database
@@ -180,7 +180,7 @@ main.go - contains the dependancy injection, and calls services to periodically 
 
 
 
-## Design decisions explanation
+# Design decisions explanation
 
 I choose to use the tools I knew how to use from previous projects. 
 
@@ -188,7 +188,7 @@ I chose Go for my language a popular one for backend development.
 
 I chose Postgres for my SQL database, along with Goose for database migration. 
 
-### Database design
+## Database design
 
 The database contains 4 tables:
 - coordinates
@@ -211,7 +211,7 @@ I tried to avoid data duplications and normalize to first normal form.
 - weather_data_conditions is the linking table to the many-to-many relationship between weather_conditions and weather_data
 
 
-### The flaws
+## The flaws
 I had to make 3 big concessions due to a lack of time and experience on my part. 
 
 **Synchrous over asynchronous**
